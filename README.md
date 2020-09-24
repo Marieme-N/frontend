@@ -9,7 +9,7 @@ To implement it, we will use:
 - ReactJS: to manage DOM elements rendering 
 - XState: to manage the state of our application
 - Material UI: to enjoy nice UI components without writting a single line of CSS (yeay!)
-- Parcel: to bundle all our source files into a single javascript file (that will be our production artifact)
+- Webpack: to bundle all our source files into a single javascript file (that will be our production artifact)
 
 We are doing only the user interface without any data persistency (for now...).
 
@@ -137,7 +137,8 @@ You render those components, meaning you create the HTML elements, using `react-
 To use React DOM in your project, nothing easier:
 
 ```ts
-// inside your src/app.ts
+// inside your src/app.tsx
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 ReactDOM.render(
@@ -145,9 +146,11 @@ ReactDOM.render(
   document.getElementById("app")
 );
 ```
+> Note: all files that imports `react` must end with .tsx extension. This is needed both for webpack
+> to know it's a typescript file with React and your IDE to load correct syntax.
 
-Where in your index.html, you would have:
-```
+Where in your `index.html`, you would have:
+```html
 <html>
  <head>...</head>
  <body>
@@ -157,27 +160,28 @@ Where in your index.html, you would have:
 </html>
 ```
 
-You can consider `react-dom` as your layer of  integration between the "real" DOM and your React code.
+You can consider `react-dom` as your layer of integration between the "real" DOM and your React code.
 
 ### React components
 
 React components are the core of React.
 
 Here is how a component looks like:
-```ts
+```tsx
 import React from 'react';
 
 type ColoredParagraphProps = {
   color: string;
 } 
 
-export const ColoredParagraph: React.FC<ColoredParagraphProps> = ({color, children}) => <p style={{color}}>{props.children}</p>
-
+export const ColoredParagraph: React.FC<ColoredParagraphProps> = ({color, children}) => (
+  <p style={{color}}>{props.children}</p>
+)
 ```
 
 And you can use it like:
 
-```ts
+```tsx
 // inside you src/app.ts file
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -193,8 +197,8 @@ ReactDOM.render(
 
 This was a dull example, in real world, we have something like:
 
-```
-// inside src/app.ts
+```tsx
+// inside src/app.tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Navigation, SideMenu, Content} from './components';
