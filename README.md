@@ -108,7 +108,7 @@ Sofar, you know:
 
 In this step, we will describe where to use each library you have installed with node.
 
-### Parcel
+### Webpack
 ### TypeScript
 
 To make it simple, it's like JavaScript but with type safety.
@@ -223,6 +223,10 @@ We almost always have:
 - A Navigation component, when we to switch screens based on some menu or icons in the main layout
 - The Content of the app, basically everything else, depending on which navigation item the user is on. 
 
+### Material UI
+
+To install Material UI into your project: https://material-ui.com/getting-started/installation/
+
 ### XState
 
 This is the implementation of our state machine, in its pure sense.
@@ -230,8 +234,6 @@ This is the implementation of our state machine, in its pure sense.
 Other libraries like Redux or MobX are equivalent solution. Redux being the most popular.
 
 We chosed XState, because we believe it is easier to understand and it propose a very elegant way of handling your frontend's state.
-
-### Material UI
 
  
 
