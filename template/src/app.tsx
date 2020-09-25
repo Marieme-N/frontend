@@ -1,12 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-
-const App: React.FC = () => (
-  <h1>Hello Lucas!</h1>
-)
+import React from "react";
+import ReactDOM from "react-dom";
+import { TemplateContent } from "./components/TemplateContent";
+import { TemplateLayout } from "./components/TemplateLayout";
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('app')
-)
+  <TemplateLayout>
+    <TemplateContent project="ARLAIDE" />
+  </TemplateLayout>,
+  document.getElementById("app")
+);
