@@ -1,10 +1,11 @@
-import { Grid, Tab, Tabs } from "@material-ui/core";
+import { Grid, Tab, Tabs, useMediaQuery } from "@material-ui/core";
 import React from "react";
 import {
   TemplateEvents,
   TemplateMachineContext,
   TemplateStates,
 } from "../state/machine";
+import { SMALL_SCREEN } from "../utils/dimensions";
 
 export const TemplateNavigation = () => {
   const { machine, send } = React.useContext(TemplateMachineContext);
@@ -13,6 +14,7 @@ export const TemplateNavigation = () => {
     <Grid container>
       <Grid item xs={12}>
         <Tabs
+          centered
           value={tabSelected}
           onChange={(_, idx) => {
             const nextView =

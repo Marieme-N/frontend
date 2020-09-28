@@ -22,9 +22,10 @@ export enum TemplateEvents {
 export const createTemplateStateMachine = () => {
   return Machine<TemplateContext>({
     id: "template",
+    initial: TemplateStates.view1,
     states: {
-      view1: {},
-      view2: {},
+      [TemplateStates.view1]: {},
+      [TemplateStates.view2]: {},
     },
     on: {
       [TemplateEvents.toView1]: TemplateStates.view1,

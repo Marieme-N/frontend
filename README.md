@@ -109,6 +109,30 @@ Sofar, you know:
 In this step, we will describe where to use each library you have installed with node.
 
 ### Webpack
+
+Webpack is here to help you prepare your artefact use in production.
+It is use to `pack` your `web` application.
+
+It's a node application that you run from your local machine, only use at developpment time. 
+
+Its entrypoint is a `webapack.config.js` file (name by convention), and works with a system of plugins and loaders. 
+
+- Loaders are extra packages that enables helps webpack to `compile` some extra languages that you may use in your project. This template is using `ts-loader` to compile our `TypeScript` files to `JavaScript` files that your browser can understand.
+- Plugins are various tools to extend webapck. This template is using 2 plugins:
+  - `CleanWebpackPlugin` to remove all build files before building files
+  - `HtmlWebpackPlugin` to create/modify the `index.html` file with the JavaScript code built
+
+`Webpack` comes with 2 other modules: `webpack-cli` and `webpack-dev-server`. They are here to make the developpment experience better.
+
+When you run `npm start`, you are starting `webpack-dev-server`which will:
+- build your code with `webpack`
+- emulate a web server (like `nginx` or `traefik`)
+- expose your code built on `localhost:8080`
+- refresh the code built on every changes saved while developping (called "hot reload")
+
+> We are using webpack when you are running `npm start` and `npm run build` commands
+
+
 ### TypeScript
 
 To make it simple, it's like JavaScript but with type safety.

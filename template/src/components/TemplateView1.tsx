@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2),
       textAlign: "center",
       color: theme.palette.text.secondary,
+      minHeight: theme.spacing(15)
     },
   })
 );
@@ -35,13 +36,13 @@ export const TemplateView1: React.FC<TemplateContentProps> = ({
         </Paper>
       </Grid>
       <Grid item xs={4}>
-        <Paper className={classes.paper}>
-          <Typography>View 1</Typography>
+        <Paper color='primary' className={classes.paper}>
+          <Typography>EPITA</Typography>
         </Paper>
       </Grid>
       <Grid item xs={4}>
         <Paper className={classes.paper}>
-          <Typography>View 2</Typography>
+          <Typography>SIGL - 2021</Typography>
         </Paper>
       </Grid>
     </Grid>
