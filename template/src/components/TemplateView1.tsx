@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const TemplateContent: React.FC<TemplateContentProps> = ({
+export const TemplateView1: React.FC<TemplateContentProps> = ({
   project,
 }) => {
   const classes = useStyles();
@@ -36,12 +36,12 @@ export const TemplateContent: React.FC<TemplateContentProps> = ({
       </Grid>
       <Grid item xs={4}>
         <Paper className={classes.paper}>
-          <Typography>TEMPLATE</Typography>
+          <Typography>View 1</Typography>
         </Paper>
       </Grid>
       <Grid item xs={4}>
         <Paper className={classes.paper}>
-          <Typography>MATERIAL UI</Typography>
+          <Typography>View 2</Typography>
         </Paper>
       </Grid>
     </Grid>
