@@ -7,7 +7,7 @@ export const TemplateNavigation = () => {
   const { machine, send } = React.useContext(TemplateMachineContext);
   const tabSelected = machine.matches(TemplateStates.view1) ? 0 : 1;
   return (
-    <Grid container>
+    <Grid container spacing={5}>
       <Grid item xs={12}>
         <Tabs
           centered

@@ -15,10 +15,12 @@ const useStyles = makeStyles((theme: Theme) =>
       minHeight: theme.spacing(15),
     },
     dark: {
-      color: theme.palette.primary.main
+      color: theme.palette.primary.main,
+      backgroundColor: 'whitesmoke'
     },
     bright: {
-      color: theme.palette.text.primary
+      color: theme.palette.text.primary,
+      backgroundColor: 'white'
     }
   })
 );
@@ -26,15 +28,17 @@ const useStyles = makeStyles((theme: Theme) =>
 export const TemplatePaper: React.FC<PaperProps> = ({
   children,
   className,
+  elevation,
   ...paperProps
 }) => {
   const classes = useStyles();
   const [paperColor, togglePaperColor] = React.useState<'bright' | 'dark'>('bright');
-
+  const paperColorClass = paperColor === 'bright' ? classes.bright : classes.dark;
+  
   return (
-    <Paper onClick={() => {
+    <Paper elevation={elevation || 3} onClick={() => {
       togglePaperColor(paperColor === 'bright' ? 'dark' : 'bright');
-    }} className={`${classes.paper} ${paperColor} ${className}`} {...paperProps}>
+    }} className={`${classes.paper} ${paperColorClass} ${className}`} {...paperProps}>
       {children}
     </Paper>
   );

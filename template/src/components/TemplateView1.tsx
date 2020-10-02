@@ -15,12 +15,12 @@ export const TemplateView1: React.FC<TemplateContentProps> = ({ project }) => {
         </TemplatePaper>
       </Grid>
       <Grid item xs={4}>
-        <TemplatePaper color="primary">
+        <TemplatePaper>
           <Typography>EPITA</Typography>
         </TemplatePaper>
       </Grid>
       <Grid item xs={4}>
-        <TemplatePaper variant="outlined">
+        <TemplatePaper>
           <Typography>SIGL - 2021</Typography>
         </TemplatePaper>
       </Grid>

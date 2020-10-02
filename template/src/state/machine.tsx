@@ -32,6 +32,9 @@ export const createTemplateStateMachine = () => {
     {
       id: "template",
       initial: TemplateStates.view1,
+      context: {
+        count: 0
+      },
       states: {
         [TemplateStates.view1]: {},
         [TemplateStates.view2]: {},

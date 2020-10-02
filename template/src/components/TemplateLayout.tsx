@@ -44,7 +44,9 @@ export const TemplateLayout: React.FC = ({ children }) => {
           Global count: {count}
         </Typography>
       </Grid>
-      {children}
+      <Grid item xs={12}>
+        {children}
+      </Grid>
     </Grid>
   );
 };
