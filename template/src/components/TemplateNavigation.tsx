@@ -1,11 +1,7 @@
-import { Grid, Tab, Tabs, useMediaQuery } from "@material-ui/core";
+import { Grid, Tab, Tabs } from "@material-ui/core";
 import React from "react";
-import {
-  TemplateEvents,
-  TemplateMachineContext,
-  TemplateStates,
-} from "../state/machine";
-import { SMALL_SCREEN } from "../utils/dimensions";
+import { TemplateEvents, TemplateStates } from "../state/machine";
+import { TemplateMachineContext } from "../state/provider";
 
 export const TemplateNavigation = () => {
   const { machine, send } = React.useContext(TemplateMachineContext);

@@ -1,19 +1,27 @@
-import { Button, Card, Grid, Paper, Typography } from "@material-ui/core";
+import { Button, Grid, Paper, Typography } from "@material-ui/core";
 import React from "react";
-import { TemplateMachineContext } from "../state/machine";
+import { TemplateEvents} from "../state/machine";
+import { TemplateMachineContext } from "../state/provider";
+import { TemplatePaper } from "./TemplatePaper";
+
 
 export const TemplateView2: React.FC = () => {
-  const [count, setCount] = React.useState(0);
+  
+  const {machine, send} = React.useContext(TemplateMachineContext);
+  const {count} = machine.context;
+
   return (
     <Grid container>
       <Grid item xs={6}>
-        <Paper>
-          <Typography>Content of View 2: Local count is {count}</Typography>
-        </Paper>
+        <TemplatePaper>
+          <Typography>Content of the view 2</Typography>
+        </TemplatePaper>
       </Grid>
       <Grid item xs={6}>
-        <Button onClick={() => setCount(count + 1)}>
-          Change my local state
+        <Button variant='contained' color='primary' onClick={() => {
+          send({type: TemplateEvents.udpateCount, newCount: count + 1})
+        }}>
+          Update global counter
         </Button>
       </Grid>
     </Grid>

@@ -1,13 +1,15 @@
-import React from "react";
-import noop from "lodash/noop";
-import { Machine, State, StateMachine } from "xstate";
-import {useMachine} from "@xstate/react";
+import { Machine, State } from "xstate";
+import { allActions, TemplateActions } from "./actions";
 
-type TemplateContext = {};
-type TemplateMachineContextProps = {
+// You can keep all values that can be share with all your components
+export type TemplateContext = {
+  count: number;
+};
+
+export type TemplateMachineContextProps = {
   machine: State<any>;
   send: Function;
-}
+};
 
 export enum TemplateStates {
   view1 = "view1",
@@ -17,56 +19,31 @@ export enum TemplateStates {
 export enum TemplateEvents {
   toView1 = "TO_VIEW_1",
   toView2 = "TO_VIEW_2",
+  udpateCount = "UPDATE_COUNT",
 }
 
-export const createTemplateStateMachine = () => {
-  return Machine<TemplateContext>({
-    id: "template",
-    initial: TemplateStates.view1,
-    states: {
-      [TemplateStates.view1]: {},
-      [TemplateStates.view2]: {},
-    },
-    on: {
-      [TemplateEvents.toView1]: TemplateStates.view1,
-      [TemplateEvents.toView2]: TemplateStates.view2,
-    },
-  });
+export type UpdateCountEvent = {
+  type: TemplateEvents.udpateCount,
+  newCount: number;
 };
 
-// @ts-ignore
-const nilContext: TemplateMachineContextProps = {machine: null, send: noop}
-
-/**
- * The context you need to use in your React components with xstate
- */
-export const TemplateMachineContext = React.createContext<TemplateMachineContextProps>(nilContext);
-
-/**
- * This React component will set the State Machine global to all of its children.
- * 
- * Spreading your `machine` and `send` function to the child using react props is very redundant.
- * Instead, we use React.createContext api (https://reactjs.org/docs/context.html#reactcreatecontext).
- * 
- * If one of the children component needs to use the state machine, it just has to write:
- * ```
- *    const MyComponentWithXState: React.FC = () => {
- *      const [machine, send] = React.useContext(TemplateMachineContext);
- *      // ...
- *    }
- * ```
- */
-export const TemplateMachineProvider: React.FC = ({children}) => {
-  const [machine, send] = useMachine(createTemplateStateMachine(), {devTools: true});
-
-  // TO avoid unecessary rendering if the machine context hasn't change between rendering
-  const contextValue = React.useMemo(() => ({
-    machine, send
-  }), [machine, send]);
-
-  return (
-    <TemplateMachineContext.Provider value={contextValue}>
-      {children}
-    </TemplateMachineContext.Provider>
-  )
-}
+export const createTemplateStateMachine = () => {
+  return Machine<TemplateContext>(
+    {
+      id: "template",
+      initial: TemplateStates.view1,
+      states: {
+        [TemplateStates.view1]: {},
+        [TemplateStates.view2]: {},
+      },
+      on: {
+        [TemplateEvents.toView1]: TemplateStates.view1,
+        [TemplateEvents.toView2]: TemplateStates.view2,
+        [TemplateEvents.udpateCount]: {
+          actions: [TemplateActions.updateCount],
+        },
+      },
+    },
+    { actions: allActions }
+  );
+};
