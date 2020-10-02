@@ -29,10 +29,8 @@ Once `nvm` is install:
 
 Then, everytime you work on your project, you can type `nvm use` command, and it will switch you to the version inside the `.nvmrc` file.
 
-> Note: It may looks like overhead to use this tool for our context, but in companies you often have
-> many frontend projects with different versions of node, and using `nvm` really helps.
-
 You can verify if everything is fine by checking node version: `node -v`
+and it should output version 14.
 
 ### IDE
 
@@ -93,9 +91,31 @@ Here are the changes you need to do in your Dockerfile:
 - install node dependencies using the same command you've type on your local machine
 - build your static files by runnin `npm run build`
 - Use nginx:stable as your second base image.
-- copy your files of the `dist/` folder of your previous stage to the /usr/share/nginx/html/ folder.
+- copy your files of the `build/` folder of your previous stage to the /usr/share/nginx/html/ folder.
 
-Test your image on your local machine:
+Because the workshop is long enough, we provide you the dockerfile:
+```dockerfile
+FROM node:14-alpine AS build
+
+COPY frontend /code/
+WORKDIR /code
+RUN npm install
+RUN npm run build
+
+FROM nginx:stable
+
+COPY --from=build /code/build/* /usr/share/nginx/html/
+```
+> Note: your Dockerfile should still be at the same place as in former workshop
+Before running it, add a new file at the root of your repository (same level as Dockerfile): `.dockerignore` with:
+```
+frontend/node_modules
+```
+
+This will make sure you are not copying `node_modules` (containing all dependencies) from your local machine to the container image.
+
+
+Test your image on your local machine, after making sure you've killed your `npm start` command:
 ```shell
 # build your image
 docker build -t arlaide-frontend:v1 .
@@ -129,7 +149,7 @@ It's a node application that you run from your local machine, only use at develo
 Its entrypoint is a `webapack.config.js` file (name by convention), and works with a system of plugins and loaders. 
 
 - Loaders are extra packages that enables helps webpack to `compile` some extra languages that you may use in your project. This template is using `ts-loader` to compile our `TypeScript` files to `JavaScript` files that your browser can understand.
-- Plugins are various tools to extend webapck. This template is using 2 plugins:
+- Plugins are various tools to extend webpack. This template uses 2 plugins:
   - `CleanWebpackPlugin` to remove all build files before building files
   - `HtmlWebpackPlugin` to create/modify the `index.html` file with the `JavaScript` code built
 
@@ -158,7 +178,7 @@ Upside is that we already configured the build for you.
 
 ### ReactJS
 
-This is the notorious framework of Facebook. 
+The notorious framework of Facebook. 
 
 In short, this library manage for you the rendering cycle of your DOM elements.
 
@@ -178,6 +198,7 @@ To use React DOM in your project, nothing easier:
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// In the template, there is bit more complex DOM than this simple <h1> tag
 ReactDOM.render(
   <h1>Hello React!</h1>,
   document.getElementById("app")
@@ -210,7 +231,7 @@ There are many different ways to write a React component:
 - using `fonction`
 - using `=>` ("arrow") with `const` (the way it is in template)
 
-Here is how a component looks like:
+A component looks like:
 
 ```tsx
 import React from 'react';
@@ -276,7 +297,7 @@ We almost always have:
 
 Often, you may need to use a local state on your React component. For example, the `TemplatePaper` component is using `React.useState(...)` api.
 
-When user clicks on the paper, the color of the text is switching back and forth.
+When user clicks on the paper, the color of the text and the background are switching back and forth.
 
 Since it's a behaviour that concerns only this component, it uses `React.useState`.
 You can see more about this hook on react documentation: https://reactjs.org/docs/hooks-state.html
@@ -298,21 +319,20 @@ Documentation and components can be found here: https://material-ui.com/getting-
 
 We provided you necessary boilerplate code to use a custom theme.
 
-You can configure your theme by modifiying the file `src/theme/index.ts` file.
+You can configure your theme by modifiying the file [`src/theme/index.ts`](https://github.com/arla-sigl-2021/frontend/tree/master/template/src/theme/index.ts) file.
 
 See all possible configurations here: https://material-ui.com/customization/theming/
-
 
 #### Layout 
 
 Template is using `Grid` layout describe here: https://material-ui.com/components/grid/
 
-You can see how we implemented it in the template: src/components/Layout.tsx
+You can see how we implemented it in the template: [src/components/TemplateLayout.tsx](https://github.com/arla-sigl-2021/frontend/tree/master/template/src/components/TemplateLayout.tsx)
 
 
 #### Component customization
 
-TemplatePaper is using custom styles, using the `makeStyles` and `createStyles` to create a `TemplatePaper`: src/components/TemplatePaper.tsx
+TemplatePaper is using custom styles, using the `makeStyles` and `createStyles` to create a `TemplatePaper`: [src/components/TemplatePaper.tsx](https://github.com/arla-sigl-2021/frontend/tree/master/template/src/components/TemplatePaper.tsx)
 
 `makeStyles` brings your UI theme object if you wish to reuse some template colors, dimensions or any other theme settings.
 
@@ -331,16 +351,16 @@ We chosed XState, because we believe it is easier to understand and it propose a
 
 > You can read about the concepts of `XState` here: https://xstate.js.org/docs/about/concepts.html
 
-`Xstate` part of the project is living inside the `src/state` folder.
+`Xstate` part of the project is living inside the [`src/state`](https://github.com/arla-sigl-2021/frontend/tree/master/template/src/state) folder.
 
 Inside, template is providing:
-- `src/state/actions.ts`: where you define actions like changing value of your machine context.
-- `src/state/machine.tsx`: where you configure your state machine
-- `src/state/provider.tsx`: Higher-order component that makes the use of your machine inside your component simpler to use.
+- [`src/state/actions.ts`](https://github.com/arla-sigl-2021/frontend/tree/master/template/src/state/actions.ts): where you define actions like changing value of your machine context.
+- [`src/state/machine.tsx`](https://github.com/arla-sigl-2021/frontend/tree/master/template/src/state/machine.tsx): where you configure your state machine
+- [`src/state/provider.tsx`](https://github.com/arla-sigl-2021/frontend/tree/master/template/src/state/provider.tsx): Higher-order component that makes the use of your machine inside your component simpler to use.
 
 #### Machine configuration
 
-The template machine is simple:
+The template machine is simple (see [`src/state/machine.tsx`](https://github.com/arla-sigl-2021/frontend/tree/master/template/src/state/machine.tsx)):
 - There is 2 possible app screens, so 2 state in the machine:
   - View 1: displaying the view 1
   - View 2: displaying the view 2
@@ -354,15 +374,9 @@ The template machine is simple:
 
 We use enumeration (`enum`) to avoid typos mistakes in names of events, actions and states. Since you will use them in different part in the code.
 
-To know more about 
-  - states: 
-  - transitions: 
-  - actions: 
-  - context (inc. assign actions): 
-
 This configuration will evolve with the number of screens you need to implement, and the context adaptions you may do.
 
-#### Using the machine inside a component
+### Using the machine inside a component
 
 You may need to use the state machine inside React components.
 This is the case for the component in the second view: `TemplateView2` in src/components/TemplateView2.tsx
@@ -391,11 +405,25 @@ This will then trigger the action `assignNewCount` inside the src/state/actions.
 //...
 ```
 
-To recap, to update the count in the global state of your UI:
-- you need to read the context value
-- send the event to update the count
-- have your machine configured to trigger the correct action when the update count event is send
-- have an assign action modifiying the context's count value. here `assignNewCount`
+What is happening in slow motion when user clicks on `+1` button?
+
+1. an `Event` is `send` of type `UpdateCountEvent` with the `newCount` of current context's `count` + 1
+1. an `Action` `assignNewCount` is triggered because it is link to the `UpdateCountEvent` in the `machine` definition
+1. the machine context is updated by the `assignNewCount`
+1. Which triggers a re-rendering of the components that uses the `count` context value. Here the `TemplateLayout` ([src/components/TemplateLayout.tsx](https://github.com/arla-sigl-2021/frontend/tree/master/template/src/components/TemplateLayout.tsx)) component
+
+
+### Further readings
+
+To know more about 
+  - states: https://xstate.js.org/docs/guides/states.html
+  - transitions: https://xstate.js.org/docs/guides/transitions.html
+  - Events: https://xstate.js.org/docs/guides/events.html
+  - actions: https://xstate.js.org/docs/guides/actions.html
+  - context (inc. assign actions): https://xstate.js.org/docs/guides/context.html
+
+> Spoiler alerts: You will use other concepts like [Invokers](https://xstate.js.org/docs/guides/communication.html) in the next workshop
+
 
 ## Step 4: Build your screens
 
